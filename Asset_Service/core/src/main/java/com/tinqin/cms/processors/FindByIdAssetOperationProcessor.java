@@ -25,7 +25,7 @@ public class FindByIdAssetOperationProcessor implements FindByIdAssetOperation {
         log.debug("Fetching asset with ID: {}", id);
 
         Asset asset = assetRepository.findById(UUID.fromString(id))
-                .orElseThrow(AssetNotFoundException::new);
+                .orElseThrow(() -> new AssetNotFoundException("Asset not found"));
 
         log.info("Found asset with ID {}: {}", id, asset);
 

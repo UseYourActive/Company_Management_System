@@ -50,6 +50,7 @@ subprojects {
         implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.5.Final'
         annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
         implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
+        testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.11.0'
     }
 }
 

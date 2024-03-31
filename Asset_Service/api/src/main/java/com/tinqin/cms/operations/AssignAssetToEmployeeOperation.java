@@ -4,6 +4,8 @@ import com.tinqin.cms.base.OperationInput;
 import com.tinqin.cms.base.OperationOutput;
 import com.tinqin.cms.base.OperationProcessor;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 public interface AssignAssetToEmployeeOperation extends OperationProcessor<AssignAssetToEmployeeOperation.AssignAssetToEmployeeResponse, AssignAssetToEmployeeOperation.AssignAssetToEmployeeRequest> {
@@ -41,7 +43,12 @@ public interface AssignAssetToEmployeeOperation extends OperationProcessor<Assig
     @AllArgsConstructor
     @Builder
     class AssignAssetToEmployeeRequest implements OperationInput {
+        @NotNull(message = "Employee ID must not be null")
+        @NotBlank(message = "Employee ID must not be blank")
         private String employeeId;
+
+        @NotNull(message = "Asset ID must not be null")
+        @NotBlank(message = "Asset ID must not be blank")
         private String assetId;
     }
 }
