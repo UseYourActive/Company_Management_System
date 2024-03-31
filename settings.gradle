@@ -1,0 +1,5 @@
+rootProject.name = 'Company_Management_System'
+include('User_Authentication_Service')
+include 'Department_Service:api'
+findProject(':Department_Service:api')?.name = 'api'
+

@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+//    id 'application'
+}
+
+group = 'com.tinqin.cms'
+version = '0.0.1-SNAPSHOT'
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+//application {
+//    mainClass = 'com.tinqin.cms.DepartmentServiceApplication'
+//}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation project(path: ':core')
+    implementation project(path: ':api')
+    implementation project(path: ':persistence')
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+//tasks.named('run', JavaExec) {
+//    main = 'com.tinqin.cms.DepartmentServiceApplication' // Specify the main class of your application
+//    classpath = sourceSets.main.runtimeClasspath
+//}
+
+test {
+    useJUnitPlatform()
+}

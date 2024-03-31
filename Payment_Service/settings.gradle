@@ -1,0 +1,8 @@
+rootProject.name = 'Payment_Service'
+include 'api'
+include 'core'
+include 'domain'
+include 'export'
+include 'persistence'
+include 'rest'
+

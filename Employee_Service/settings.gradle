@@ -1,0 +1,8 @@
+rootProject.name = 'Employee_Service'
+include 'api'
+include 'core'
+include 'domain'
+include 'persistence'
+include 'rest'
+include 'export'
+

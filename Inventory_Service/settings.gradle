@@ -1,0 +1,8 @@
+rootProject.name = 'Inventory_Service'
+include 'api'
+include 'core'
+include 'domain'
+include 'persistence'
+include 'rest'
+include 'export'
+
