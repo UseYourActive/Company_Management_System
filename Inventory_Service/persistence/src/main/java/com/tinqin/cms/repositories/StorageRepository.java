@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface StorageRepository extends JpaRepository<Storage, UUID> {
-    Optional<Storage> findStorageBookByBookId(UUID id);
+    Optional<Storage> findStorageBookByItemId(UUID id);
 }

@@ -20,7 +20,7 @@ public class RepositoryUtils {
 //    }
 
     public Storage findByStorageBookIdOrThrow(StorageRepository repository, UUID id, String entityName) {
-        return repository.findStorageBookByBookId(id)
+        return repository.findStorageBookByItemId(id)
                 .orElseThrow(() -> {
             log.error("{} not found for ID: {}", entityName, id);
             return new EntityNotFoundException(entityName);
