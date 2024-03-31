@@ -1,5 +1,6 @@
 package com.tinqin.cms.operations;
 
+import com.tinqin.cms.annotations.validators.ValidBigDecimalString;
 import com.tinqin.cms.base.OperationInput;
 import com.tinqin.cms.base.OperationOutput;
 import com.tinqin.cms.base.OperationProcessor;
@@ -8,46 +9,49 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.validator.constraints.UUID;
 
-public interface ImportBookOperation extends OperationProcessor<ImportBookOperation.ImportBookResponse, ImportBookOperation.ImportBookRequest> {
+import static com.tinqin.cms.operations.RegisterNewAssetOperation.*;
+
+public interface RegisterNewAssetOperation extends OperationProcessor<RegisterNewAssetResponse, RegisterNewAssetRequest> {
     @Schema(
-            description = "Book Request DTO for importing a book."
+            description = "Request DTO for registering a new book."
     )
     @Getter
     @Builder
     @AllArgsConstructor
-    class ImportBookRequest implements OperationInput {
+    class RegisterNewAssetRequest implements OperationInput {
         @Schema(
-                description = "Book id"
+                description = "Id"
         )
         @UUID
-        @NotEmpty(message = "Book id should not be null or empty!")
-        public String bookId;
+        @NotEmpty(message = "Id should not be null or empty!")
+        private String id;
 
         @Schema(
-                description = "Book quantity"
+                description = "Price"
         )
         @NotEmpty(message = "Price should not be null or empty!")
-        public String quantityToImport;
+        @ValidBigDecimalString
+        private String price;
     }
 
     @Schema(
-            description = "Book Response DTO for importing a book."
+            description = "Response DTO for registering a new book."
     )
     @Getter
     @Setter(AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Builder
     @AllArgsConstructor
-    class ImportBookResponse implements OperationOutput {
+    class RegisterNewAssetResponse implements OperationOutput {
         @Schema(
-                description = "Storage item id"
+                description = "Id"
         )
-        private String storageItemId;
+        private String id;
 
         @Schema(
-                description = "Book id"
+                description = "Asset id"
         )
-        private String targetBookId;
+        private String targetAssetId;
 
         @Schema(
                 description = "Price"

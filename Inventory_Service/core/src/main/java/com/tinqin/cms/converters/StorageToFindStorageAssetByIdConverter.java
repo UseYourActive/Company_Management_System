@@ -1,22 +1,22 @@
 package com.tinqin.cms.converters;
 
-import com.tinqin.cms.entities.StorageBook;
+import com.tinqin.cms.entities.Storage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import static com.tinqin.cms.operations.FindStorageBookByIdOperation.*;
+import static com.tinqin.cms.operations.FindStorageByIdOperation.*;
 
 @Component
 @Slf4j
-public class StorageBookToFindStorageBookByIdConverter implements Converter<StorageBook, FindStorageBookByIdResponse> {
+public class StorageToFindStorageAssetByIdConverter implements Converter<Storage, FindStorageByIdResponse> {
     @Override
-    public FindStorageBookByIdResponse convert(StorageBook source) {
+    public FindStorageByIdResponse convert(Storage source) {
         log.debug("Converting StorageBook to FindStorageBookByIdResponse: {}", source);
 
-        FindStorageBookByIdResponse response = FindStorageBookByIdResponse.builder()
-                .storageItemId(String.valueOf(source.getId()))
-                .targetBookId(String.valueOf(source.getBookId()))
+        FindStorageByIdResponse response = FindStorageByIdResponse.builder()
+                .id(String.valueOf(source.getId()))
+                .targetAssetId(String.valueOf(source.getItemId()))
                 .price(String.valueOf(source.getPrice()))
                 .quantity(String.valueOf(source.getQuantity()))
                 .build();

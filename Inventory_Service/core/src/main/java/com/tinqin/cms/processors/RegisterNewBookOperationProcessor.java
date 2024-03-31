@@ -1,10 +1,10 @@
 package com.tinqin.cms.processors;
 
-import com.tinqin.cms.converters.StorageBookToRegisterNewBookResponseConverter;
+import com.tinqin.cms.converters.StorageAssetToRegisterNewAssetResponseConverter;
 import com.tinqin.cms.converters.StringToBigDecimalConverter;
-import com.tinqin.cms.entities.StorageBook;
-import com.tinqin.cms.operations.RegisterNewBookOperation;
-import com.tinqin.cms.repositories.StorageBookRepository;
+import com.tinqin.cms.entities.Storage;
+import com.tinqin.cms.operations.RegisterNewAssetOperation;
+import com.tinqin.cms.repositories.StorageRepository;
 import com.tinqin.cms.utils.RepositoryUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,35 +16,29 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class RegisterNewBookOperationProcessor implements RegisterNewBookOperation {
-    private final StorageBookRepository storageBookRepository;
-    private final StorageBookToRegisterNewBookResponseConverter storageBookToRegisterNewBookResponseConverter;
+public class RegisterNewBookOperationProcessor implements RegisterNewAssetOperation {
+    private final StorageRepository storageBookRepository;
+    private final StorageAssetToRegisterNewAssetResponseConverter converter;
     private final StringToBigDecimalConverter stringToBigDecimalConverter;
     private final RepositoryUtils repositoryUtils;
 
     @Override
-    public RegisterNewBookResponse process(final RegisterNewBookRequest request) {
-        String bookId = request.getBookId();
+    public RegisterNewAssetResponse process(final RegisterNewAssetRequest request) {
+        String id = request.getId();
         String price = request.getPrice();
-        log.info("Processing request to register new book with ID: {}", bookId);
+        log.info("Processing request to register new asset with ID: {}", id);
 
-        StorageBook storageBook = repositoryUtils.findByStorageBookIdOrThrow(storageBookRepository, UUID.fromString(bookId), StorageBook.class.getName());
-
-//        StorageBook storageBook = storageBookRepository.findStorageBookByBookId(UUID.fromString(bookId))
-//                .orElseThrow(() -> {
-//                    log.error("StorageBook not found for ID: {}", bookId);
-//                    return new StorageBookNotFoundException();
-//                });
+        Storage storage = repositoryUtils.findByStorageBookIdOrThrow(storageBookRepository, UUID.fromString(id), Storage.class.getName());
 
         BigDecimal newPrice = stringToBigDecimalConverter.convert(price);
-        storageBook.setPrice(newPrice);
-        log.info("Updated price for book with ID {}: new price = {}", bookId, newPrice);
+        storage.setPrice(newPrice);
+        log.info("Updated price for asset with ID {}: new price = {}", id, newPrice);
 
-        StorageBook savedBook = storageBookRepository.save(storageBook);
-        log.info("Book with ID {} saved successfully", bookId);
+        Storage savedBook = storageBookRepository.save(storage);
+        log.info("Asset with ID {} saved successfully", id);
 
-        RegisterNewBookResponse response = storageBookToRegisterNewBookResponseConverter.convert(savedBook);
-        log.info("Registration operation completed successfully for book with ID: {}", bookId);
+        RegisterNewAssetResponse response = converter.convert(savedBook);
+        log.info("Registration operation completed successfully for asset with ID: {}", id);
 
         return response;
     }

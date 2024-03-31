@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.tinqin.cms.operations.ChangeBookPriceOperation.*;
-import static com.tinqin.cms.operations.DeleteStorageBookByIdOperation.*;
-import static com.tinqin.cms.operations.DeleteStorageBooksByIdsOperation.*;
-import static com.tinqin.cms.operations.ExportBookOperation.*;
-import static com.tinqin.cms.operations.FindAllStorageBooksOperation.*;
-import static com.tinqin.cms.operations.FindStorageBookByIdOperation.*;
-import static com.tinqin.cms.operations.FindStorageBooksByIdsOperation.*;
-import static com.tinqin.cms.operations.ImportBookOperation.*;
-import static com.tinqin.cms.operations.RegisterNewBookOperation.*;
+import static com.tinqin.cms.operations.ChangePriceOperation.*;
+import static com.tinqin.cms.operations.DeleteStorageByIdOperation.*;
+import static com.tinqin.cms.operations.DeleteStoragesByIdsOperation.*;
+import static com.tinqin.cms.operations.ExportAssetOperation.*;
+import static com.tinqin.cms.operations.FindAllStoragesOperation.*;
+import static com.tinqin.cms.operations.FindStorageByIdOperation.*;
+import static com.tinqin.cms.operations.FindStorageAssetsByIdsOperation.*;
+import static com.tinqin.cms.operations.ImportAssetOperation.*;
+import static com.tinqin.cms.operations.RegisterNewAssetOperation.*;
 
 @Tag(
         name = "CRUD REST APIs for Inventory Resource",
@@ -34,15 +34,15 @@ import static com.tinqin.cms.operations.RegisterNewBookOperation.*;
 @Validated
 @RequestMapping(path = "/storage-item")
 public class StorageBookController {
-    private final FindStorageBookByIdOperation findStorageBookByIdOperation;
-    private final FindAllStorageBooksOperation findAllStorageBooksOperation;
-    private final FindStorageBooksByIdsOperation findStorageBooksByIdsOperation;
-    private final RegisterNewBookOperation registerNewBookOperation;
-    private final ImportBookOperation importBookOperation;
-    private final ExportBookOperation exportBookOperation;
-    private final ChangeBookPriceOperation changeBookPriceOperation;
-    private final DeleteStorageBooksByIdsOperation deleteStorageBooksByIdsOperation;
-    private final DeleteStorageBookByIdOperation deleteStorageBookByIdOperation;
+    private final FindStorageByIdOperation findStorageByIdOperation;
+    private final FindAllStoragesOperation findAllStoragesOperation;
+    private final FindStorageAssetsByIdsOperation findStorageAssetsByIdsOperation;
+    private final RegisterNewAssetOperation registerNewAssetOperation;
+    private final ImportAssetOperation importAssetOperation;
+    private final ExportAssetOperation exportAssetOperation;
+    private final ChangePriceOperation changePriceOperation;
+    private final DeleteStoragesByIdsOperation deleteStoragesByIdsOperation;
+    private final DeleteStorageByIdOperation deleteStorageByIdOperation;
 
     //region GET
     @Transactional
@@ -53,12 +53,12 @@ public class StorageBookController {
     @Operation(description = "From the users request finds an already existing storage book in the database.",
             summary = "Finds a storage book by id.")
     @GetMapping(path = "/{id}")
-    public ResponseEntity<FindStorageBookByIdResponse> findStorageBookById(@PathVariable("id") String id) {
-        FindStorageBookByIdRequest request = FindStorageBookByIdRequest.builder()
-                .storageBookId(id)
+    public ResponseEntity<FindStorageByIdResponse> findStorageBookById(@PathVariable("id") String id) {
+        FindStorageByIdRequest request = FindStorageByIdRequest.builder()
+                .id(id)
                 .build();
 
-        return new ResponseEntity<>(findStorageBookByIdOperation.process(request), HttpStatus.OK);
+        return new ResponseEntity<>(findStorageByIdOperation.process(request), HttpStatus.OK);
     }
 
     @Transactional
@@ -69,14 +69,14 @@ public class StorageBookController {
     @Operation(description = "From the users request finds all already existing storage books in the database.",
             summary = "Finds all storage books.")
     @GetMapping("/{pageNumber}/{numberOfBooksPerPage}")
-    public ResponseEntity<FindAllStorageBooksResponse> findAllStorageBooks(@PathVariable("pageNumber") Integer pageNumber,
-                                                                           @PathVariable("numberOfBooksPerPage") Integer numberOfBooksPerPage) {
-        FindAllStorageBooksRequest request = FindAllStorageBooksRequest.builder()
+    public ResponseEntity<FindAllStoragesResponse> findAllStorageBooks(@PathVariable("pageNumber") Integer pageNumber,
+                                                                       @PathVariable("numberOfBooksPerPage") Integer numberOfBooksPerPage) {
+        FindAllStoragesRequest request = FindAllStoragesRequest.builder()
                 .pageNumber(pageNumber)
                 .numberOfBooksPerPage(numberOfBooksPerPage)
                 .build();
 
-        return new ResponseEntity<>(findAllStorageBooksOperation.process(request), HttpStatus.OK);
+        return new ResponseEntity<>(findAllStoragesOperation.process(request), HttpStatus.OK);
     }
 
     @Transactional
@@ -87,12 +87,12 @@ public class StorageBookController {
     @Operation(description = "From the users request finds all storage books with the given ids.",
             summary = "Finds all storage books with given ids.")
     @GetMapping("/{ids}")
-    public ResponseEntity<FindStorageBooksByIdsResponse> findStorageBooksByIds(@PathVariable("ids") List<String> ids) {
-        FindStorageBooksByIdsRequest request = FindStorageBooksByIdsRequest.builder()
+    public ResponseEntity<FindStorageAssetsByIdsResponse> findStorageBooksByIds(@PathVariable("ids") List<String> ids) {
+        FindStorageAssetsByIdsRequest request = FindStorageAssetsByIdsRequest.builder()
                 .ids(ids)
                 .build();
 
-        return new ResponseEntity<>(findStorageBooksByIdsOperation.process(request), HttpStatus.OK);
+        return new ResponseEntity<>(findStorageAssetsByIdsOperation.process(request), HttpStatus.OK);
     }
     //endregion
 
@@ -105,8 +105,8 @@ public class StorageBookController {
     @Operation(description = "From the users request registers a specific book with a given price and amount of copies of it.",
             summary = "Register a book.")
     @PostMapping(path = "/register")
-    public ResponseEntity<RegisterNewBookResponse> registerNewBook(@RequestBody RegisterNewBookRequest request) {
-        return new ResponseEntity<>(registerNewBookOperation.process(request), HttpStatus.CREATED);
+    public ResponseEntity<RegisterNewAssetResponse> registerNewBook(@RequestBody RegisterNewAssetRequest request) {
+        return new ResponseEntity<>(registerNewAssetOperation.process(request), HttpStatus.CREATED);
     }
     //endregion
 
@@ -119,8 +119,8 @@ public class StorageBookController {
     @Operation(description = "From the users request imports an already existing in the database book.",
             summary = "Import a certain amount of books.")
     @PostMapping(path = "/import")
-    public ResponseEntity<ImportBookResponse> importBooks(@RequestBody ImportBookRequest request) {
-        return new ResponseEntity<>(importBookOperation.process(request), HttpStatus.OK);
+    public ResponseEntity<ImportAssetResponse> importBooks(@RequestBody ImportAssetRequest request) {
+        return new ResponseEntity<>(importAssetOperation.process(request), HttpStatus.OK);
     }
 
     @Transactional
@@ -131,8 +131,8 @@ public class StorageBookController {
     @Operation(description = "From the users request exports an already existing in the database book.",
             summary = "Exports a certain amount of books.")
     @PostMapping(path = "/export")
-    public ResponseEntity<ExportBookResponse> exportBooks(@RequestBody ExportBookRequest request) {
-        return new ResponseEntity<>(exportBookOperation.process(request), HttpStatus.OK);
+    public ResponseEntity<ExportAssetResponse> exportBooks(@RequestBody ExportAssetRequest request) {
+        return new ResponseEntity<>(exportAssetOperation.process(request), HttpStatus.OK);
     }
 
     @Transactional
@@ -143,8 +143,8 @@ public class StorageBookController {
     @Operation(description = "From the users request changes the price of an already existing in the database book.",
             summary = "Change a books price.")
     @PostMapping(path = "/chance-price")
-    public ResponseEntity<ChangeBookPriceResponse> changeBookPrice(@RequestBody ChangeBookPriceRequest request) {
-        return new ResponseEntity<>(changeBookPriceOperation.process(request), HttpStatus.OK);
+    public ResponseEntity<ChangePriceResponse> changeBookPrice(@RequestBody ChangePriceRequest request) {
+        return new ResponseEntity<>(changePriceOperation.process(request), HttpStatus.OK);
     }
     //endregion
 
@@ -157,12 +157,12 @@ public class StorageBookController {
     @Operation(description = "From the users request deleting already existing in the database storage books.",
             summary = "Delete storage books by ids.")
     @DeleteMapping(path = "/{ids}")
-    public ResponseEntity<DeleteStorageBooksByIdsResponse> deleteStorageBooksByIds(@PathVariable("ids") List<String> ids) {
-        DeleteStorageBooksByIdsRequest request = DeleteStorageBooksByIdsRequest.builder()
+    public ResponseEntity<DeleteStoragesByIdsResponse> deleteStorageBooksByIds(@PathVariable("ids") List<String> ids) {
+        DeleteStoragesByIdsRequest request = DeleteStoragesByIdsRequest.builder()
                 .ids(ids)
                 .build();
 
-        return new ResponseEntity<>(deleteStorageBooksByIdsOperation.process(request), HttpStatus.OK);
+        return new ResponseEntity<>(deleteStoragesByIdsOperation.process(request), HttpStatus.OK);
     }
 
     @Transactional
@@ -173,12 +173,12 @@ public class StorageBookController {
     @Operation(description = "From the users request deletes already an existing in the database storage book.",
             summary = "Delete a storage book by id.")
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<DeleteStorageBookByIdResponse> deleteStorageBookById(@PathVariable("id") String id) {
-        DeleteStorageBookByIdRequest request = DeleteStorageBookByIdRequest.builder()
-                .storageBookId(id)
+    public ResponseEntity<DeleteStorageByIdResponse> deleteStorageBookById(@PathVariable("id") String id) {
+        DeleteStorageByIdRequest request = DeleteStorageByIdRequest.builder()
+                .id(id)
                 .build();
 
-        return new ResponseEntity<>(deleteStorageBookByIdOperation.process(request), HttpStatus.OK);
+        return new ResponseEntity<>(deleteStorageByIdOperation.process(request), HttpStatus.OK);
     }
     //endregion
 }

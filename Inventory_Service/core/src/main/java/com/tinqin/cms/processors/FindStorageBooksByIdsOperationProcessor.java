@@ -1,9 +1,9 @@
 package com.tinqin.cms.processors;
 
-import com.tinqin.cms.converters.FindStorageBooksByIdsResponseDTOConverter;
-import com.tinqin.cms.entities.StorageBook;
-import com.tinqin.cms.operations.FindStorageBooksByIdsOperation;
-import com.tinqin.cms.repositories.StorageBookRepository;
+import com.tinqin.cms.converters.FindStorageAssetsByIdsResponseDTOConverter;
+import com.tinqin.cms.entities.Storage;
+import com.tinqin.cms.operations.FindStorageAssetsByIdsOperation;
+import com.tinqin.cms.repositories.StorageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class FindStorageBooksByIdsOperationProcessor implements FindStorageBooksByIdsOperation {
-    private final StorageBookRepository storageBookRepository;
-    private final FindStorageBooksByIdsResponseDTOConverter converter;
+public class FindStorageBooksByIdsOperationProcessor implements FindStorageAssetsByIdsOperation {
+    private final StorageRepository storageBookRepository;
+    private final FindStorageAssetsByIdsResponseDTOConverter converter;
 
     @Override
-    public FindStorageBooksByIdsResponse process(final FindStorageBooksByIdsRequest request) {
-        log.info("Processing request to find storage books by IDs");
+    public FindStorageAssetsByIdsResponse process(final FindStorageAssetsByIdsRequest request) {
+        log.info("Processing request to find storage assets by IDs");
 
         List<String> ids = request.getIds();
 
@@ -28,17 +28,17 @@ public class FindStorageBooksByIdsOperationProcessor implements FindStorageBooks
                 .map(UUID::fromString)
                 .toList();
 
-        List<StorageBook> storageBookList = storageBookRepository.findAllById(uuidList);
-        log.debug("Found {} storage books by IDs", storageBookList.size());
+        List<Storage> list = storageBookRepository.findAllById(uuidList);
+        log.debug("Found {} storage assets by IDs", list.size());
 
-        List<FindStorageBooksByIdsResponseDTO> storageBookResponseDTOList = storageBookList.stream()
+        List<FindStorageBooksByIdsResponseDTO> storageBookResponseDTOList = list.stream()
                 .map(converter::convert)
                 .toList();
 
-        FindStorageBooksByIdsResponse response = FindStorageBooksByIdsResponse.builder()
+        FindStorageAssetsByIdsResponse response = FindStorageAssetsByIdsResponse.builder()
                 .findStorageBooksByIdsResponseDTOS(storageBookResponseDTOList)
                 .build();
-        log.info("Found {} storage books by IDs in response", storageBookResponseDTOList.size());
+        log.info("Found {} storage assets by IDs in response", storageBookResponseDTOList.size());
 
         return response;
     }

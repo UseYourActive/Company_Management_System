@@ -9,47 +9,51 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.validator.constraints.UUID;
 
-public interface RegisterNewBookOperation extends OperationProcessor<RegisterNewBookOperation.RegisterNewBookResponse, RegisterNewBookOperation.RegisterNewBookRequest> {
+import static com.tinqin.cms.operations.ChangePriceOperation.*;
+
+public interface ChangePriceOperation extends OperationProcessor<ChangePriceResponse, ChangePriceRequest> {
     @Schema(
-            description = "Book Request DTO for registering a new book."
+            description = "Request DTO for changing price."
     )
     @Getter
+    @Setter
+    @NoArgsConstructor
     @Builder
     @AllArgsConstructor
-    class RegisterNewBookRequest implements OperationInput {
+    class ChangePriceRequest implements OperationInput {
         @Schema(
-                description = "Book id"
+                description = "id"
         )
         @UUID
-        @NotEmpty(message = "Book id should not be null or empty!")
-        private String bookId;
+        @NotEmpty(message = "Id should not be null or empty!")
+        private String id;
 
         @Schema(
-                description = "Book price"
+                description = "New price"
         )
-        @NotEmpty(message = "Price should not be null or empty!")
+        @NotEmpty(message = "New price should not be null or empty!")
         @ValidBigDecimalString
-        private String price;
+        private String newPrice;
     }
 
     @Schema(
-            description = "Book Response DTO for registering a new book."
+            description = "Response DTO for changing price."
     )
     @Getter
     @Setter(AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Builder
     @AllArgsConstructor
-    class RegisterNewBookResponse implements OperationOutput {
+    class ChangePriceResponse implements OperationOutput {
         @Schema(
-                description = "Storage item id"
+                description = "Id"
         )
-        private String storageItemId;
+        private String id;
 
         @Schema(
-                description = "Book id"
+                description = "Asset id"
         )
-        private String targetBookId;
+        private String targetAssetId;
 
         @Schema(
                 description = "Price"

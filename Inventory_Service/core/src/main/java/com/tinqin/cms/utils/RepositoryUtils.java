@@ -1,7 +1,7 @@
 package com.tinqin.cms.utils;
 
-import com.tinqin.cms.entities.StorageBook;
-import com.tinqin.cms.repositories.StorageBookRepository;
+import com.tinqin.cms.entities.Storage;
+import com.tinqin.cms.repositories.StorageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class RepositoryUtils {
 //                });
 //    }
 
-    public StorageBook findByStorageBookIdOrThrow(StorageBookRepository repository, UUID id, String entityName) {
+    public Storage findByStorageBookIdOrThrow(StorageRepository repository, UUID id, String entityName) {
         return repository.findStorageBookByBookId(id)
                 .orElseThrow(() -> {
             log.error("{} not found for ID: {}", entityName, id);

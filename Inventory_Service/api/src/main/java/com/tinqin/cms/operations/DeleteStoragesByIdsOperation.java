@@ -8,26 +8,28 @@ import lombok.*;
 
 import java.util.List;
 
-public interface DeleteStorageBooksByIdsOperation extends OperationProcessor<DeleteStorageBooksByIdsOperation.DeleteStorageBooksByIdsResponse, DeleteStorageBooksByIdsOperation.DeleteStorageBooksByIdsRequest> {
+import static com.tinqin.cms.operations.DeleteStoragesByIdsOperation.*;
+
+public interface DeleteStoragesByIdsOperation extends OperationProcessor<DeleteStoragesByIdsResponse, DeleteStoragesByIdsRequest> {
     @Schema(
-            description = "Book Request DTO for deleting storage books by ids."
+            description = "Request DTO for deleting storage books by ids."
     )
     @Getter
     @Builder
     @AllArgsConstructor
-    public class DeleteStorageBooksByIdsRequest implements OperationInput {
+    class DeleteStoragesByIdsRequest implements OperationInput {
         private List<String> ids;
     }
 
     @Schema(
-            description = "Book Response DTO for deleting storage books by ids."
+            description = "Response DTO for deleting storage books by ids."
     )
     @Getter
     @Setter(AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Builder
     @AllArgsConstructor
-    public class DeleteStorageBooksByIdsResponse implements OperationOutput {
+    class DeleteStoragesByIdsResponse implements OperationOutput {
         @Schema(
                 description = "Status."
         )

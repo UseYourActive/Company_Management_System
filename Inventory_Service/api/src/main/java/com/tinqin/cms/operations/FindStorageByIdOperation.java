@@ -6,38 +6,40 @@ import com.tinqin.cms.base.OperationProcessor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-public interface FindStorageBookByIdOperation extends OperationProcessor<FindStorageBookByIdOperation.FindStorageBookByIdResponse, FindStorageBookByIdOperation.FindStorageBookByIdRequest> {
+import static com.tinqin.cms.operations.FindStorageByIdOperation.*;
+
+public interface FindStorageByIdOperation extends OperationProcessor<FindStorageByIdResponse, FindStorageByIdRequest> {
     @Schema(
-            description = "Book Request DTO for finding a storage book by id."
+            description = "Request DTO for finding a storage book by id."
     )
     @Getter
     @Builder
     @AllArgsConstructor
-    class FindStorageBookByIdRequest implements OperationInput {
+    class FindStorageByIdRequest implements OperationInput {
         @Schema(
-                description = "Storage book id."
+                description = "Id."
         )
-        private String storageBookId;
+        private String id;
     }
 
     @Schema(
-            description = "Book Response DTO for finding storage book by id."
+            description = "Response DTO for finding storage book by id."
     )
     @Getter
     @Setter(AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Builder
     @AllArgsConstructor
-    class FindStorageBookByIdResponse implements OperationOutput {
+    class FindStorageByIdResponse implements OperationOutput {
         @Schema(
-                description = "Storage item id"
+                description = "Id"
         )
-        private String storageItemId;
+        private String id;
 
         @Schema(
-                description = "Book id"
+                description = "Asset id"
         )
-        private String targetBookId;
+        private String targetAssetId;
 
         @Schema(
                 description = "Price"

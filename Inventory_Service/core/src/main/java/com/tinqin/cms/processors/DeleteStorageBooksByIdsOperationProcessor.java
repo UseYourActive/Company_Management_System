@@ -1,7 +1,7 @@
 package com.tinqin.cms.processors;
 
-import com.tinqin.cms.operations.DeleteStorageBooksByIdsOperation;
-import com.tinqin.cms.repositories.StorageBookRepository;
+import com.tinqin.cms.operations.DeleteStoragesByIdsOperation;
+import com.tinqin.cms.repositories.StorageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,22 +12,22 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class DeleteStorageBooksByIdsOperationProcessor implements DeleteStorageBooksByIdsOperation {
-    private final StorageBookRepository storageBookRepository;
+public class DeleteStorageBooksByIdsOperationProcessor implements DeleteStoragesByIdsOperation {
+    private final StorageRepository storageBookRepository;
 
     @Override
-    public DeleteStorageBooksByIdsResponse process(final DeleteStorageBooksByIdsRequest request) {
+    public DeleteStoragesByIdsResponse process(final DeleteStoragesByIdsRequest request) {
         List<String> ids = request.getIds();
 
         List<UUID> uuidList = ids.stream()
                 .map(UUID::fromString)
                 .toList();
-        log.info("Deleting storage books with IDs: {}", uuidList);
+        log.info("Deleting storages with IDs: {}", uuidList);
 
         storageBookRepository.deleteAllById(uuidList);
-        log.info("Deleted storage books with IDs: {}", uuidList);
+        log.info("Deleted storages with IDs: {}", uuidList);
 
-        return DeleteStorageBooksByIdsResponse.builder()
+        return DeleteStoragesByIdsResponse.builder()
                 .status("Deleting operation complete")
                 .build();
     }

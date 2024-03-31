@@ -8,14 +8,16 @@ import lombok.*;
 
 import java.util.List;
 
-public interface FindStorageBooksByIdsOperation extends OperationProcessor<FindStorageBooksByIdsOperation.FindStorageBooksByIdsResponse, FindStorageBooksByIdsOperation.FindStorageBooksByIdsRequest> {
+import static com.tinqin.cms.operations.FindStorageAssetsByIdsOperation.*;
+
+public interface FindStorageAssetsByIdsOperation extends OperationProcessor<FindStorageAssetsByIdsResponse, FindStorageAssetsByIdsRequest> {
     @Schema(
-            description = "Book Request DTO for finding all storage books by ids."
+            description = "Request DTO for finding all storage books by ids."
     )
     @Getter
     @Builder
     @AllArgsConstructor
-    class FindStorageBooksByIdsRequest implements OperationInput {
+    class FindStorageAssetsByIdsRequest implements OperationInput {
         @Schema(
                 description = "Input ids"
         )
@@ -23,14 +25,14 @@ public interface FindStorageBooksByIdsOperation extends OperationProcessor<FindS
     }
 
     @Schema(
-            description = "Book Response DTO for finding storage books by ids."
+            description = "Response DTO for finding storage books by ids."
     )
     @Getter
     @Setter(AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Builder
     @AllArgsConstructor
-    class FindStorageBooksByIdsResponse implements OperationOutput {
+    class FindStorageAssetsByIdsResponse implements OperationOutput {
         private List<FindStorageBooksByIdsResponseDTO> findStorageBooksByIdsResponseDTOS;
     }
 
@@ -44,14 +46,14 @@ public interface FindStorageBooksByIdsOperation extends OperationProcessor<FindS
     @AllArgsConstructor
     class FindStorageBooksByIdsResponseDTO {
         @Schema(
-                description = "Storage item id"
+                description = "Id"
         )
-        private String storageItemId;
+        private String id;
 
         @Schema(
-                description = "Book id"
+                description = "Asset id"
         )
-        private String targetBookId;
+        private String targetAssetId;
 
         @Schema(
                 description = "Price"

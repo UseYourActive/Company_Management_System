@@ -8,46 +8,48 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.validator.constraints.UUID;
 
-public interface ExportBookOperation extends OperationProcessor<ExportBookOperation.ExportBookResponse, ExportBookOperation.ExportBookRequest> {
+import static com.tinqin.cms.operations.ExportAssetOperation.*;
+
+public interface ExportAssetOperation extends OperationProcessor<ExportAssetResponse, ExportAssetRequest> {
     @Schema(
-            description = "Book Request DTO for exporting books / a book."
+            description = "Request DTO for exporting assets."
     )
     @Getter
     @Builder
     @AllArgsConstructor
-    class ExportBookRequest implements OperationInput {
+    class ExportAssetRequest implements OperationInput {
         @Schema(
-                description = "Book id"
+                description = "Id"
         )
         @UUID
-        @NotEmpty(message = "Book id should not be null or empty!")
-        public String bookId;
+        @NotEmpty(message = "Id should not be null or empty!")
+        public String id;
 
         @Schema(
-                description = "Book quantity to export"
+                description = "Quantity to export"
         )
         @NotEmpty(message = "Quantity to export should not be null or empty!")
         public String quantityToExport;
     }
 
     @Schema(
-            description = "Book Response DTO for exporting a book."
+            description = "Response DTO for exporting an asset."
     )
     @Getter
     @Setter(AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Builder
     @AllArgsConstructor
-    class ExportBookResponse implements OperationOutput {
+    class ExportAssetResponse implements OperationOutput {
         @Schema(
-                description = "Storage item id"
+                description = "Id"
         )
-        private String storageItemId;
+        private String id;
 
         @Schema(
-                description = "Book id"
+                description = "Asset id"
         )
-        private String targetBookId;
+        private String targetAssetId;
 
         @Schema(
                 description = "Price"

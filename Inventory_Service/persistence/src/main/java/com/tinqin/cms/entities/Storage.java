@@ -13,13 +13,13 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StorageBook {
+public class Storage {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "book_id", nullable = false)
-    private UUID bookId;
+    @Column(name = "item_id", nullable = false)
+    private UUID itemId;
 
     @Column(name = "price", nullable = false)
     private BigDecimal price;

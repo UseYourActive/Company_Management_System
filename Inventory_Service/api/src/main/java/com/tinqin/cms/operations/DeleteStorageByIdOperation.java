@@ -6,38 +6,40 @@ import com.tinqin.cms.base.OperationProcessor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-public interface DeleteStorageBookByIdOperation extends OperationProcessor<DeleteStorageBookByIdOperation.DeleteStorageBookByIdResponse, DeleteStorageBookByIdOperation.DeleteStorageBookByIdRequest> {
+import static com.tinqin.cms.operations.DeleteStorageByIdOperation.*;
+
+public interface DeleteStorageByIdOperation extends OperationProcessor<DeleteStorageByIdResponse, DeleteStorageByIdRequest> {
     @Schema(
-            description = "Book Request DTO for deleting a storage book by id."
+            description = "Request DTO for deleting a storage book by id."
     )
     @Getter
     @Builder
     @AllArgsConstructor
-    class DeleteStorageBookByIdRequest implements OperationInput {
+    class DeleteStorageByIdRequest implements OperationInput {
         @Schema(
                 description = "Storage book id."
         )
-        private String storageBookId;
+        private String id;
     }
 
     @Schema(
-            description = "Book Response DTO for deleting a storage book by id."
+            description = "Response DTO for deleting a storage book by id."
     )
     @Getter
     @Setter(AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Builder
     @AllArgsConstructor
-    class DeleteStorageBookByIdResponse implements OperationOutput {
+    class DeleteStorageByIdResponse implements OperationOutput {
         @Schema(
-                description = "Storage item id"
+                description = "Id"
         )
-        private String storageItemId;
+        private String id;
 
         @Schema(
-                description = "Book id"
+                description = "Asset id"
         )
-        private String targetBookId;
+        private String targetAssetId;
 
         @Schema(
                 description = "Price"

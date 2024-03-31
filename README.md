@@ -1,6 +1,6 @@
-# Employee Management System with Spring Boot
+# Company Management System with Spring Boot
 
-This project is a comprehensive Employee Management System built using Spring Boot. It employs various Spring Cloud technologies to ensure robustness and scalability.
+This project is a comprehensive Company Management System built using Spring Boot. It employs various Spring Cloud technologies to ensure robustness and scalability.
 
 ## Spring Cloud Technologies Utilized:
 

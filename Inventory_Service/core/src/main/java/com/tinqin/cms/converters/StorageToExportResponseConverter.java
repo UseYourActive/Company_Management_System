@@ -1,24 +1,24 @@
 package com.tinqin.cms.converters;
 
-import com.tinqin.cms.entities.StorageBook;
+import com.tinqin.cms.entities.Storage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import static com.tinqin.cms.operations.ExportBookOperation.*;
+import static com.tinqin.cms.operations.ExportAssetOperation.*;
 
 @Component
 @Slf4j
 @Qualifier("StorageBookToExportBookResponseConverter")
-public class StorageBookToExportBookResponseConverter implements Converter<StorageBook, ExportBookResponse> {
+public class StorageToExportResponseConverter implements Converter<Storage, ExportAssetResponse> {
     @Override
-    public ExportBookResponse convert(StorageBook source) {
+    public ExportAssetResponse convert(Storage source) {
         log.debug("Converting StorageBook to ExportBookResponse: {}", source);
 
-        ExportBookResponse response = ExportBookResponse.builder()
-                .storageItemId(String.valueOf(source.getId()))
-                .targetBookId(String.valueOf(source.getBookId()))
+        ExportAssetResponse response = ExportAssetResponse.builder()
+                .id(String.valueOf(source.getId()))
+                .targetAssetId(String.valueOf(source.getItemId()))
                 .price(String.valueOf(source.getPrice()))
                 .quantity(String.valueOf(source.getQuantity()))
                 .build();

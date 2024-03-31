@@ -11,14 +11,16 @@ import lombok.*;
 
 import java.util.List;
 
-public interface FindAllStorageBooksOperation extends OperationProcessor<FindAllStorageBooksOperation.FindAllStorageBooksResponse, FindAllStorageBooksOperation.FindAllStorageBooksRequest> {
+import static com.tinqin.cms.operations.FindAllStoragesOperation.*;
+
+public interface FindAllStoragesOperation extends OperationProcessor<FindAllStoragesResponse, FindAllStoragesRequest> {
     @Schema(
             description = "Book Request DTO for finding all storage books."
     )
     @Getter
     @Builder
     @AllArgsConstructor
-    class FindAllStorageBooksRequest implements OperationInput {
+    class FindAllStoragesRequest implements OperationInput {
         @Schema(
                 description = "Page number for Pagination"
         )
@@ -42,28 +44,28 @@ public interface FindAllStorageBooksOperation extends OperationProcessor<FindAll
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Builder
     @AllArgsConstructor
-    class FindAllStorageBooksResponse implements OperationOutput {
-        private List<FindAllStorageBooksResponseDTO> findAllStorageBooksResponseDTOS;
+    class FindAllStoragesResponse implements OperationOutput {
+        private List<FindAllStoragesResponseDTO> findAllStoragesResponseDTOS;
     }
 
     @Schema(
-            description = "Storage Book Response DTO."
+            description = "Storage Response DTO."
     )
     @Getter
     @Setter(AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Builder
     @AllArgsConstructor
-    class FindAllStorageBooksResponseDTO {
+    class FindAllStoragesResponseDTO {
         @Schema(
-                description = "Storage item id"
+                description = "Id"
         )
-        private String storageItemId;
+        private String id;
 
         @Schema(
-                description = "Book id"
+                description = "Asset id"
         )
-        private String targetBookId;
+        private String targetAssetId;
 
         @Schema(
                 description = "Price"
