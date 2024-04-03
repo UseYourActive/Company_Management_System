@@ -1,6 +1,7 @@
 package com.tinqin.cms.processors;
 
 import com.tinqin.cms.entities.Attendance;
+import com.tinqin.cms.exceptions.InvalidCheckInTimeException;
 import com.tinqin.cms.operations.CreateNewAttendanceOperation;
 import com.tinqin.cms.repositories.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Service
@@ -15,6 +17,7 @@ import java.util.UUID;
 @Slf4j
 public class CreateNewAttendanceOperationProcessor implements CreateNewAttendanceOperation {
     private final AttendanceRepository attendanceRepository;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     @Override
     public CreateNewAttendanceResponse process(final CreateNewAttendanceRequest request) {
@@ -27,9 +30,16 @@ public class CreateNewAttendanceOperationProcessor implements CreateNewAttendanc
         log.debug("Creating new Attendance object with check-in time: {}, check-out time: {}, employee ID: {}",
                 checkInTime, checkOutTime, employeeId);
 
+        LocalDateTime checkInTimeParsed = LocalDateTime.parse(checkInTime);
+        LocalDateTime checkOutTimeParsed = LocalDateTime.parse(checkOutTime);
+
+        if (checkOutTimeParsed.isBefore(checkInTimeParsed)) {
+            throw new InvalidCheckInTimeException("Check-out time cannot be before check-in time");
+        }
+
         Attendance attendance = Attendance.builder()
-                .checkInTime(LocalDateTime.parse(checkInTime))
-                .checkOutTime(LocalDateTime.parse(checkOutTime))
+                .checkInTime(checkInTimeParsed)
+                .checkOutTime(checkOutTimeParsed)
                 .employeeId(UUID.fromString(employeeId))
                 .build();
 
@@ -41,8 +51,8 @@ public class CreateNewAttendanceOperationProcessor implements CreateNewAttendanc
 
         return CreateNewAttendanceResponse.builder()
                 .id(String.valueOf(persistedAttendance.getId()))
-                .checkInTime(String.valueOf(persistedAttendance.getCheckInTime()))
-                .checkOutTime(String.valueOf(persistedAttendance.getCheckOutTime()))
+                .checkInTime(checkInTimeParsed.format(formatter))
+                .checkOutTime(checkOutTimeParsed.format(formatter))
                 .employeeId(String.valueOf(persistedAttendance.getEmployeeId()))
                 .build();
     }

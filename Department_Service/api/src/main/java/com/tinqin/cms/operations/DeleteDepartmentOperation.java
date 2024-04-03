@@ -5,6 +5,7 @@ import com.tinqin.cms.base.OperationOutput;
 import com.tinqin.cms.base.OperationProcessor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 public interface DeleteDepartmentOperation extends OperationProcessor<DeleteDepartmentOperation.DeleteDepartmentResponse, DeleteDepartmentOperation.DeleteDepartmentRequest> {
@@ -16,6 +17,7 @@ public interface DeleteDepartmentOperation extends OperationProcessor<DeleteDepa
     class DeleteDepartmentRequest implements OperationInput {
 
         @NotBlank(message = "ID must not be blank")
+        @NotNull(message = "ID must not be null")
         @Schema(description = "ID of the department to delete", example = "12345678-abcd-90ab-cdef-1234567890ab")
         private String id;
     }

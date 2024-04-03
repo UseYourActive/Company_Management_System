@@ -2,6 +2,7 @@ package com.tinqin.cms.processors;
 
 import com.tinqin.cms.entities.Attendance;
 import com.tinqin.cms.exceptions.AttendanceNotFoundException;
+import com.tinqin.cms.exceptions.InvalidCheckoutTimeException;
 import com.tinqin.cms.operations.ClockOutOperation;
 import com.tinqin.cms.repositories.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,13 @@ public class ClockOutOperationProcessor implements ClockOutOperation {
 
         Attendance attendance = attendanceRepository.findLastAttendanceByEmployeeId(UUID.fromString(employeeId))
                 .orElseThrow(AttendanceNotFoundException::new);
+
+        LocalDateTime clockInTime = attendance.getCheckInTime();
+        LocalDateTime clockOutTime = LocalDateTime.now();
+
+        if (clockOutTime.isBefore(clockInTime)) {
+            throw new InvalidCheckoutTimeException("Clock-out time cannot be before clock-in time.");
+        }
 
         attendance.setCheckOutTime(LocalDateTime.now());
 
