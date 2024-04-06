@@ -5,6 +5,7 @@ import com.tinqin.cms.base.OperationOutput;
 import com.tinqin.cms.base.OperationProcessor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 public interface FindByIdDepartmentOperation extends OperationProcessor<FindByIdDepartmentOperation.FindByIdDepartmentResponse, FindByIdDepartmentOperation.FindByIdDepartmentRequest> {
