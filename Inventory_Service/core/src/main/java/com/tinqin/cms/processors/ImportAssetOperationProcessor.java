@@ -15,7 +15,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class ImportAssetOperationProcessor implements ImportAssetOperation {
-    private final StorageRepository storageBookRepository;
+    private final StorageRepository storageRepository;
     private final StorageBookToImportBookResponseConverter storageBookToImportBookResponseConverter;
     private final RepositoryUtils repositoryUtils;
 
@@ -25,12 +25,12 @@ public class ImportAssetOperationProcessor implements ImportAssetOperation {
         String quantityToImport = request.getQuantityToImport();
         log.info("Processing request to import {} units of assets with ID: {}", quantityToImport, id);
 
-        Storage asset = repositoryUtils.findByStorageBookIdOrThrow(storageBookRepository, UUID.fromString(id), Storage.class.getName());
+        Storage asset = repositoryUtils.findByAssetIdOrThrow(storageRepository, UUID.fromString(id), Storage.class.getName());
 
         asset.setQuantity(asset.getQuantity() + Integer.parseInt(quantityToImport));
         log.info("Updated quantity for asset with ID {}: new quantity = {}", id, asset.getQuantity());
 
-        Storage savedBook = storageBookRepository.save(asset);
+        Storage savedBook = storageRepository.save(asset);
         log.info("Asset with ID {} saved successfully", id);
 
         ImportAssetResponse response = storageBookToImportBookResponseConverter.convert(savedBook);

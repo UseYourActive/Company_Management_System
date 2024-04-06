@@ -15,7 +15,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class ExportAssetOperationProcessor implements ExportAssetOperation {
-    private final StorageRepository storageBookRepository;
+    private final StorageRepository storageRepository;
     private final RepositoryUtils repositoryUtils;
     private final StorageToExportResponseConverter converter;
 
@@ -25,12 +25,12 @@ public class ExportAssetOperationProcessor implements ExportAssetOperation {
         String quantityToExport = request.getQuantityToExport();
         log.info("Processing request to export {} units with ID: {}", quantityToExport, id);
 
-        Storage storage = repositoryUtils.findByStorageBookIdOrThrow(storageBookRepository, UUID.fromString(id), Storage.class.getName());
+        Storage storage = repositoryUtils.findByAssetIdOrThrow(storageRepository, UUID.fromString(id), Storage.class.getName());
 
         storage.setQuantity(storage.getQuantity() - Integer.parseInt(quantityToExport));
         log.info("Updated quantity for asset with ID {}: new quantity = {}", id, storage.getQuantity());
 
-        Storage saved = storageBookRepository.save(storage);
+        Storage saved = storageRepository.save(storage);
         log.info("Asset with ID {} saved successfully", id);
 
         ExportAssetResponse response = converter.convert(saved);

@@ -14,21 +14,21 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class FindStorageBookByIdOperationProcessor implements FindStorageByIdOperation {
-    private final StorageRepository storageBookRepository;
+public class FindAssetByIdOperationProcessor implements FindStorageByIdOperation {
+    private final StorageRepository storageRepository;
     private final RepositoryUtils repositoryUtils;
     private final StorageToFindStorageAssetByIdConverter converter;
 
     @Override
     public FindStorageByIdResponse process(final FindStorageByIdRequest request) {
         String id = request.getId();
-        log.info("Processing request to find StorageBook by ID: {}", id);
+        log.info("Processing request to find storage by ID: {}", id);
 
-        Storage storage = repositoryUtils.findByStorageBookIdOrThrow(storageBookRepository, UUID.fromString(id), Storage.class.getName());
-        log.debug("Found StorageBook by ID: {}", id);
+        Storage storage = repositoryUtils.findByAssetIdOrThrow(storageRepository, UUID.fromString(id), Storage.class.getName());
+        log.debug("Found storage by ID: {}", id);
 
         FindStorageByIdResponse response = converter.convert(storage);
-        log.info("Find StorageBook by ID operation completed successfully for ID: {}", id);
+        log.info("Find storage by ID operation completed successfully for ID: {}", id);
 
         return response;
     }

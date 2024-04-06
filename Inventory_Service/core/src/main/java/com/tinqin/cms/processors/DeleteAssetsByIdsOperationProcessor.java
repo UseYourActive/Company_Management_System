@@ -12,8 +12,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class DeleteStorageBooksByIdsOperationProcessor implements DeleteStoragesByIdsOperation {
-    private final StorageRepository storageBookRepository;
+public class DeleteAssetsByIdsOperationProcessor implements DeleteStoragesByIdsOperation {
+    private final StorageRepository storageRepository;
 
     @Override
     public DeleteStoragesByIdsResponse process(final DeleteStoragesByIdsRequest request) {
@@ -24,7 +24,7 @@ public class DeleteStorageBooksByIdsOperationProcessor implements DeleteStorages
                 .toList();
         log.info("Deleting storages with IDs: {}", uuidList);
 
-        storageBookRepository.deleteAllById(uuidList);
+        storageRepository.deleteAllById(uuidList);
         log.info("Deleted storages with IDs: {}", uuidList);
 
         return DeleteStoragesByIdsResponse.builder()

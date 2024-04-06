@@ -13,18 +13,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class DeleteStorageBookByIdOperationProcessor implements DeleteStorageByIdOperation {
-    private final StorageRepository storageBookRepository;
+public class DeleteAssetByIdOperationProcessor implements DeleteStorageByIdOperation {
+    private final StorageRepository storageRepository;
     private final RepositoryUtils repositoryUtils;
 
     @Override
     public DeleteStorageByIdResponse process(final DeleteStorageByIdRequest request) {
         String id = request.getId();
 
-        Storage storageBook = repositoryUtils.findByStorageBookIdOrThrow(storageBookRepository, UUID.fromString(id), Storage.class.getName());
+        Storage storageBook = repositoryUtils.findByAssetIdOrThrow(storageRepository, UUID.fromString(id), Storage.class.getName());
         log.info("Deleting storage with ID: {}", id);
 
-        storageBookRepository.delete(storageBook);
+        storageRepository.delete(storageBook);
         log.info("Storage with ID {} deleted successfully", id);
 
         DeleteStorageByIdResponse response = DeleteStorageByIdResponse.builder()

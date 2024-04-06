@@ -16,8 +16,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class RegisterNewBookOperationProcessor implements RegisterNewAssetOperation {
-    private final StorageRepository storageBookRepository;
+public class RegisterNewAssetOperationProcessor implements RegisterNewAssetOperation {
+    private final StorageRepository storageRepository;
     private final StorageAssetToRegisterNewAssetResponseConverter converter;
     private final StringToBigDecimalConverter stringToBigDecimalConverter;
     private final RepositoryUtils repositoryUtils;
@@ -28,13 +28,13 @@ public class RegisterNewBookOperationProcessor implements RegisterNewAssetOperat
         String price = request.getPrice();
         log.info("Processing request to register new asset with ID: {}", id);
 
-        Storage storage = repositoryUtils.findByStorageBookIdOrThrow(storageBookRepository, UUID.fromString(id), Storage.class.getName());
+        Storage storage = repositoryUtils.findByAssetIdOrThrow(storageRepository, UUID.fromString(id), Storage.class.getName());
 
         BigDecimal newPrice = stringToBigDecimalConverter.convert(price);
         storage.setPrice(newPrice);
         log.info("Updated price for asset with ID {}: new price = {}", id, newPrice);
 
-        Storage savedBook = storageBookRepository.save(storage);
+        Storage savedBook = storageRepository.save(storage);
         log.info("Asset with ID {} saved successfully", id);
 
         RegisterNewAssetResponse response = converter.convert(savedBook);

@@ -14,8 +14,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class FindStorageBooksByIdsOperationProcessor implements FindStorageAssetsByIdsOperation {
-    private final StorageRepository storageBookRepository;
+public class FindStoragesByIdsOperationProcessor implements FindStorageAssetsByIdsOperation {
+    private final StorageRepository storageRepository;
     private final FindStorageAssetsByIdsResponseDTOConverter converter;
 
     @Override
@@ -28,7 +28,7 @@ public class FindStorageBooksByIdsOperationProcessor implements FindStorageAsset
                 .map(UUID::fromString)
                 .toList();
 
-        List<Storage> list = storageBookRepository.findAllById(uuidList);
+        List<Storage> list = storageRepository.findAllById(uuidList);
         log.debug("Found {} storage assets by IDs", list.size());
 
         List<FindStorageBooksByIdsResponseDTO> storageBookResponseDTOList = list.stream()
