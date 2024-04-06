@@ -15,7 +15,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class FindLeaveByEmployeeIdAndStatus implements FindByEmployeeIdAndStatusOperation {
+public class FindLeaveByEmployeeIdAndStatusOperationProcessor implements FindByEmployeeIdAndStatusOperation {
     private final LeaveRepository leaveRepository;
     private final FindByEmployeeIdAndStatusResponseDTOConverter converter;
 
