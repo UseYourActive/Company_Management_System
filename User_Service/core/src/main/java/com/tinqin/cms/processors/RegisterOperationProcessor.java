@@ -78,6 +78,10 @@ public class RegisterOperationProcessor implements RegisterOperation {
     }
 
     private Token saveUserToken(User user, String jwt) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
         Token token = Token.builder()
                 .user(user)
                 .token(jwt)

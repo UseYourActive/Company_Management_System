@@ -29,7 +29,7 @@ public class EditTrainingOperationProcessor implements EditTrainingOperation {
         log.info("Processing request to edit training with ID: {}", id);
 
         Training training = trainingRepository.findById(UUID.fromString(id))
-                .orElseThrow(TrainingNotFoundException::new);
+                .orElseThrow(() -> new TrainingNotFoundException("Training not found"));
 
         Optional.ofNullable(title)
                 .ifPresent(t -> {

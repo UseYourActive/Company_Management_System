@@ -8,7 +8,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-public interface EditTrainingOperation extends OperationProcessor<EditTrainingOperation.EditTrainingResponse, EditTrainingOperation.EditTrainingRequest> {
+import static com.tinqin.cms.operations.EditTrainingOperation.*;
+
+public interface EditTrainingOperation extends OperationProcessor<EditTrainingResponse, EditTrainingRequest> {
     @Getter
     @Setter
     @NoArgsConstructor
