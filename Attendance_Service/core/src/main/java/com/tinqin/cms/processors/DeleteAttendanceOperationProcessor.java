@@ -6,6 +6,7 @@ import com.tinqin.cms.operations.DeleteAttendanceOperation;
 import com.tinqin.cms.repositories.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Slf4j
 public class DeleteAttendanceOperationProcessor implements DeleteAttendanceOperation {
     private final AttendanceRepository attendanceRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public DeleteAttendanceResponse process(final DeleteAttendanceRequest request) {
@@ -43,6 +45,8 @@ public class DeleteAttendanceOperationProcessor implements DeleteAttendanceOpera
                 .build();
 
         log.info("Returning response for deleted attendance: {}", response);
+
+        kafkaTemplate.send("ATTENDANCE-SERVICE", "Successfully deleted a attendance.");
 
         return response;
     }

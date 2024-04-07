@@ -7,6 +7,7 @@ import com.tinqin.cms.operations.CreateNewAssetOperation;
 import com.tinqin.cms.repositories.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CreateNewAssetOperationProcessor implements CreateNewAssetOperation {
     private final AssetRepository assetRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public CreateNewAssetResponse process(final CreateNewAssetRequest request) {
@@ -37,6 +39,8 @@ public class CreateNewAssetOperationProcessor implements CreateNewAssetOperation
         Asset persistedAsset = assetRepository.save(asset);
 
         log.info("Asset created successfully with ID: {}", persistedAsset.getId());
+
+        kafkaTemplate.send("ASSET-SERVICE", "Successfully assigned an asset to employee.");
 
         return CreateNewAssetResponse.builder()
                 .id(String.valueOf(persistedAsset.getId()))

@@ -83,12 +83,11 @@ public class ReadMessagesService {
 
     private void createChronology(ConsumerRecord<String, String> record) {
         Chronology chronology = new Chronology();
-        chronology.setEmail(record.key());
         chronology.setLog(record.value());
         chronology.setCreatedOn(Instant.ofEpochMilli(record.timestamp()).atZone(ZoneId.systemDefault()).toOffsetDateTime());
 
         chronologyService.saveChronology(chronology);
 
-        log.info(chronology.getEmail() + " " + chronology.getLog() + " " + chronology.getCreatedOn());
+        log.info(chronology.getLog() + " " + chronology.getCreatedOn());
     }
 }

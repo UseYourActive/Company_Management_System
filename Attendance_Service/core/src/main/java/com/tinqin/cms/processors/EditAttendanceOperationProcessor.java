@@ -6,6 +6,7 @@ import com.tinqin.cms.operations.EditAttendanceOperation;
 import com.tinqin.cms.repositories.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Slf4j
 public class EditAttendanceOperationProcessor implements EditAttendanceOperation {
     private final AttendanceRepository attendanceRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public EditAttendanceResponse process(final EditAttendanceRequest request) {
@@ -50,6 +52,8 @@ public class EditAttendanceOperationProcessor implements EditAttendanceOperation
         Attendance persistedAttendance = attendanceRepository.save(attendance);
 
         log.info("Attendance successfully edited: {}", persistedAttendance);
+
+        kafkaTemplate.send("ATTENDANCE-SERVICE", "Successfully edited a attendance.");
 
         return EditAttendanceResponse.builder()
                 .id(String.valueOf(persistedAttendance.getId()))

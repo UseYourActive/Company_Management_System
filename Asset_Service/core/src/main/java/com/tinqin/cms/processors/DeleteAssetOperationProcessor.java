@@ -6,6 +6,7 @@ import com.tinqin.cms.operations.DeleteAssetOperation;
 import com.tinqin.cms.repositories.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Slf4j
 public class DeleteAssetOperationProcessor implements DeleteAssetOperation {
     private final AssetRepository assetRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public DeleteAssetResponse process(final DeleteAssetRequest request) {
@@ -33,6 +35,8 @@ public class DeleteAssetOperationProcessor implements DeleteAssetOperation {
         assetRepository.delete(asset);
 
         log.info("Asset with ID {} successfully deleted", id);
+
+        kafkaTemplate.send("ASSET-SERVICE", "Successfully deleted an asset.");
 
         return DeleteAssetResponse.builder()
                 .isSuccessfullyDeleted(Boolean.TRUE)

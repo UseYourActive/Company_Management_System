@@ -23,6 +23,7 @@ dependencies {
     implementation project(path: ':persistence')
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'com.tinqin.cms:export:0.0.1-SNAPSHOT'
 }
 
 dependencyManagement {

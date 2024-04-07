@@ -6,6 +6,7 @@ import com.tinqin.cms.repositories.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Slf4j
 public class FindAllAssetsOperationProcessor implements FindAllAssetsOperation {
     private final AssetRepository assetRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public FindAllAssetsResponse process(final FindAllAssetsRequest request) {
@@ -33,6 +35,8 @@ public class FindAllAssetsOperationProcessor implements FindAllAssetsOperation {
                 .toList();
 
         log.info("Found {} assets", list.size());
+
+        kafkaTemplate.send("ASSET-SERVICE", "Successfully found all assets.");
 
         return FindAllAssetsResponse.builder()
                 .findAllAssetsResponseDTOS(list)

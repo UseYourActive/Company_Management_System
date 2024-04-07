@@ -6,6 +6,7 @@ import com.tinqin.cms.operations.FindByIdAssetOperation;
 import com.tinqin.cms.repositories.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Slf4j
 public class FindByIdAssetOperationProcessor implements FindByIdAssetOperation {
     private final AssetRepository assetRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public FindByIdAssetResponse process(final FindByIdAssetRequest request) {
@@ -28,6 +30,8 @@ public class FindByIdAssetOperationProcessor implements FindByIdAssetOperation {
                 .orElseThrow(() -> new AssetNotFoundException("Asset not found"));
 
         log.info("Found asset with ID {}: {}", id, asset);
+
+        kafkaTemplate.send("ASSET-SERVICE", "Successfully found asset by id.");
 
         return FindByIdAssetResponse.builder()
                 .id(String.valueOf(asset.getId()))

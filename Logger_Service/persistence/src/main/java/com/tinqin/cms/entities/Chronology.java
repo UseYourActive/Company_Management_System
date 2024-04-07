@@ -18,9 +18,6 @@ public class Chronology {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "created_on")
     private OffsetDateTime createdOn;
 

@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.tinqin.cms.operations.ClockInOperation.*;
 import static com.tinqin.cms.operations.CreateNewAttendanceOperation.*;
 import static com.tinqin.cms.operations.DeleteAttendanceOperation.*;
 import static com.tinqin.cms.operations.EditAttendanceOperation.*;
@@ -40,6 +41,7 @@ public class AttendanceController {
     private final FindAllAttendancesOperation findAllAttendancesOperation;
     private final DeleteAttendanceOperation deleteAttendanceOperation;
     private final EditAttendanceOperation editAttendanceOperation;
+    private final ClockInOperation clockInOperation;
 
     //region GET
     @Transactional
@@ -89,6 +91,18 @@ public class AttendanceController {
     public ResponseEntity<CreateNewAttendanceResponse> createNewAttendance(@Valid @RequestBody CreateNewAttendanceRequest request) {
         return new ResponseEntity<>(createNewAttendanceOperation.process(request), HttpStatus.CREATED);
     }
+
+    @Transactional
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully clocks in attendance."),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "text/html"))
+    })
+    @Operation(description = "From the users request clocks in as a new attendance that does not exist in the database yet.",
+            summary = "Clocks in attendance.")
+    @PostMapping(path = "/clock-in")
+    public ResponseEntity<ClockInResponse> clockInAttendance(@Valid @RequestBody ClockInRequest request) {
+        return new ResponseEntity<>(clockInOperation.process(request), HttpStatus.CREATED);
+    }
     //endregion
 
     //region PUT
@@ -122,4 +136,6 @@ public class AttendanceController {
         return new ResponseEntity<>(deleteAttendanceOperation.process(request), HttpStatus.OK);
     }
     //endregion
+
+
 }

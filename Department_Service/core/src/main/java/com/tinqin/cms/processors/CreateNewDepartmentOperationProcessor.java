@@ -6,6 +6,7 @@ import com.tinqin.cms.operations.CreateNewDepartmentOperation;
 import com.tinqin.cms.repositories.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 public class CreateNewDepartmentOperationProcessor implements CreateNewDepartmentOperation {
     private final DepartmentRepository departmentRepository;
     private final CreateNewDepartmentMapper converter;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public CreateNewDepartmentResponse process(final CreateNewDepartmentRequest request) {
@@ -38,6 +40,8 @@ public class CreateNewDepartmentOperationProcessor implements CreateNewDepartmen
         Department savedDepartment = departmentRepository.save(department);
 
         CreateNewDepartmentResponse response = converter.convert(savedDepartment);
+
+        kafkaTemplate.send("DEPARTMENT-SERVICE", "Successfully created a new department.");
 
         return response;
     }

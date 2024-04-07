@@ -29,7 +29,7 @@ public class ChronologyService {
     }
 
     public IndexVM<MessageLog> getChronology(ChronologyFilter filter) {
-        Page<Chronology> page = chronologyRepository.findChronologyByFilter(filter.email(), filter.createdAfter(), filter.createdBefore(),
+        Page<Chronology> page = chronologyRepository.findChronologyByFilter(filter.createdAfter(), filter.createdBefore(),
                 filter.type() == null ? "" : filter.type().getLabel(), PageRequest.of(filter.page(), filter.pageSize()));
 
         return new IndexVM<>(page.map(MessageLog::new));

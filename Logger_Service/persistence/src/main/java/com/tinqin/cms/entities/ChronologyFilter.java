@@ -4,8 +4,7 @@ import com.tinqin.cms.enums.Type;
 
 import java.time.OffsetDateTime;
 
-public record ChronologyFilter(String email,
-                               Type type,
+public record ChronologyFilter(Type type,
                                OffsetDateTime createdAfter,
                                OffsetDateTime createdBefore,
                                int page,

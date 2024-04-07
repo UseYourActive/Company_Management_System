@@ -6,6 +6,7 @@ import com.tinqin.cms.operations.FindByIdAttendanceOperation;
 import com.tinqin.cms.repositories.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Slf4j
 public class FindByIdAttendanceOperationProcessor implements FindByIdAttendanceOperation {
     private final AttendanceRepository attendanceRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public FindByIdAttendanceResponse process(final FindByIdAttendanceRequest request) {
@@ -33,6 +35,8 @@ public class FindByIdAttendanceOperationProcessor implements FindByIdAttendanceO
         log.debug("Fetched attendance: {}", attendance);
 
         log.info("Returning attendance with ID: {}", id);
+
+        kafkaTemplate.send("ATTENDANCE-SERVICE", "Successfully found a attendance by id.");
 
         return FindByIdAttendanceResponse.builder()
                 .id(String.valueOf(attendance.getId()))

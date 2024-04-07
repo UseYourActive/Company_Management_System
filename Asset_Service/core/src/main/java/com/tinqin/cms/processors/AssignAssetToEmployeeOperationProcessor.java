@@ -7,6 +7,7 @@ import com.tinqin.cms.operations.AssignAssetToEmployeeOperation;
 import com.tinqin.cms.repositories.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AssignAssetToEmployeeOperationProcessor implements AssignAssetToEmployeeOperation {
     private final AssetRepository assetRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public AssignAssetToEmployeeResponse process(final AssignAssetToEmployeeRequest request) {
@@ -29,6 +31,8 @@ public class AssignAssetToEmployeeOperationProcessor implements AssignAssetToEmp
         asset.setAssetStatus(AssetStatus.ASSIGNED);
 
         Asset persistedAsset = assetRepository.save(asset);
+
+        kafkaTemplate.send("ASSET-SERVICE", "Successfully assigned an asset to employee.");
 
         return AssignAssetToEmployeeResponse.builder()
                 .id(String.valueOf(persistedAsset.getId()))

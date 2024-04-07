@@ -6,6 +6,7 @@ import com.tinqin.cms.repositories.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Slf4j
 public class FindAllAttendancesOperationProcessor implements FindAllAttendancesOperation {
     private final AttendanceRepository attendanceRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public FindAllAttendancesResponse process(final FindAllAttendancesRequest request) {
@@ -35,6 +37,8 @@ public class FindAllAttendancesOperationProcessor implements FindAllAttendancesO
         log.debug("Fetched {} attendances", list.size());
 
         log.info("Returning response with {} attendances", list.size());
+
+        kafkaTemplate.send("ATTENDANCE-SERVICE", "Successfully found all attendances.");
 
         return FindAllAttendancesResponse.builder()
                 .findAllAttendancesResponseDTOS(list)

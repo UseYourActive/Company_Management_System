@@ -7,6 +7,7 @@ import com.tinqin.cms.operations.ClockOutOperation;
 import com.tinqin.cms.repositories.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ClockOutOperationProcessor implements ClockOutOperation {
     private final AttendanceRepository attendanceRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
     @Override
     public ClockOutResponse process(final ClockOutRequest request) {
         String employeeId = request.getEmployeeId();
@@ -34,6 +37,8 @@ public class ClockOutOperationProcessor implements ClockOutOperation {
         attendance.setCheckOutTime(LocalDateTime.now());
 
         Attendance persistedAttendance = attendanceRepository.save(attendance);
+
+        kafkaTemplate.send("ATTENDANCE-SERVICE", "Successfully clocked out attendance.");
 
         return ClockOutResponse.builder()
                 .successfullyClockedOut(Boolean.TRUE)
